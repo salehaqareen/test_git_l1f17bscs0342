@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        
+        $(document).ready(function () {
+            $(".win").hide();
+            let arr = [];
+            let clickedboxes = [];
+            let boxes = []; //---------for storing id's of each boxes-----------------
+            //-----------------creates tr and td and give them unique id's-----------------
+            let win=false;
+            var bingoCount = 0;
+            var check_row0 = false, check_row1 = false, check_row2 = false, check_row3 = false, check_row4 = false;
+            var check_col0 = false, check_col1 = false, check_col2 = false, check_col3 = false, check_col4 = false;   //---------true when row, col, diagnol are =5;---------
+            var check_left_Diagonal = false, check_right_Diagonal = false;
+
+            for (r = 0; r < 5; r += 1) {
+                let row = document.createElement("tr");
+                row.className = "row";
+                row.id = "row" + r;
+
+                for (c = 0; c < 5; c += 1) {
+                    let box = document.createElement("td");
+                    box.className = "box";
+                    box.id = "box" + r + c;
+                    row.append(box);
+                };
+                $("#tt01").append(row);
+            }
+
+
+            //-------------------generates random array of 1- 25 numbers---------------
+            let i = 0;
+
+            while (i < 25) {
+                let num = Math.floor((Math.random() * 25) + 1);
+                if (i === 0) {
+                    arr[i] = num;
+                    i++;
+                }
+                else if (avalaible(num, arr) == false) {
+                    arr[i] = num;
+                    i++;
+                }
+
+            }
+            //-------------this function checks and shuffles the numbers--------
+            function avalaible(num, arr) {
+                let a = false;
+                for (let j = 0; j < arr.length; j++) {
+                    if (num === arr[j]) {
+                        a = true;
+                        break;
+                    }
+                }
+                return a;
+            }
+            //--------------------assigns values of arr to the boxes--------------------
+            for (let i = 0; i < 25; i++) {
+                // console.log(arr);
+
+                if (i < 5) {
+                    let id = "#box0" + i
+                    $(`${id}`).text(arr[i]);
+                    // console.log($(`${id}`).text = arr[i]);
+                }
+                else if (i > 4 && i < 10) {
+                    let id = "#box1" + (i - 5);     //template litration 
+                    $(`${id}`).text(arr[i]);
+                }
+                else if (i > 9 && i < 15) {
+                    let id = "#box2" + (i - 10);
+                    $(`${id}`).text(arr[i]);
+                }
+                else if (i > 14 && i < 20) {
+                    let id = "#box3" + (i - 15);
+                    $(`${id}`).text(arr[i]);
+                }
+                else if (i > 19 && i < 25) {
+                    let id = "#box4" + (i - 20);
+                    $(`${id}`).text(arr[i]);
+                    // console.log($(`${id}`).text = arr[i]);
+                }
+            }
+
+
+            // -----------------adding event lister for click on respective -------------------- 
+            boxes = document.getElementsByClassName('box');
+            console.log(boxes);
+            for (let c = 0; c < boxes.length; c++) {
+                // let id=
+                
+                $(boxes[c]).click(function () {
+                    let color = $(boxes[c]).css("background-color")
+                    console.log(color)
+
+                    if (color != "rgb(0, 128, 0)") {
+                        console.log("color if entered")
+                        $(boxes[c]).css("background-color", "rgb(253, 253, 103)");
+                    }
+
+                    console.log("click function entered");
+                    let col = boxes[c].id.charAt(4);   //--------------e.g id=box12: 1:col, 2:row---------------
+                    let rowno = boxes[c].id.charAt(3);
+                    console.log("col: " + col);
+                    console.log("rowno: " + rowno);
+
+                    if (boxavailable(boxes[c].id) == false) 
+                    {
+                        console.log("if of idee entered");
+                        clickedboxes[clickedboxes.length] =
+                        {
+                            box: boxes[c],
+                            column: col,
+                            row: rowno
+                        };
+
+                        console.log(clickedboxes);
+                        checkBingo();
+                        if(bingoCount==5)
+                        {
+                            location.reload();
+                        }
+                    }
+                });
+
+            }
+
+            function boxavailable(boxid) {
+                let status = false;
+                for (let j = 0; j < clickedboxes.length; j++) {
+                    if (boxid === clickedboxes[j].box.id) {
+                        status = true;
+                        break;
+                    }
+                }
+
+                return status;
+            }
+ function boxavailable2(boxid) {
+                for (let j = 0; j < clickedboxes.length; j++) {
+                    if (boxid === clickedboxes[j].box.id) {
+                        status = true;
+                        break;
+                    }
+                }
+
+                return status;
+            }
+
+
+            function checkBingo() {
+                let r0 = 0, r1 = 0, r2 = 0, r3 = 0, r4 = 0;
+                let c0 = 0, c1 = 0, c2 = 0, c3 = 0, c4 = 0;
+                let left_D = 0, right_D = 0;
+                console.log(clickedboxes[0].box.id)
+                for (let index = 0; index < clickedboxes.length; index++) {
+                    // ----------checks rows--------
+                    if (clickedboxes[index].row == 0)
+                        r0++;
+                    if (clickedboxes[index].row == 1)
+                        r1++;
+                    if (clickedboxes[index].row == 2)
+                        r2++;
+                    if (clickedboxes[index].row == 3)
+                        r3++;
+                    if (clickedboxes[index].row == 4)
+                        r4++;
+
+                    //-------check coloums------
+                    if (clickedboxes[index].column == 0)
+                        c0++;
+                    if (clickedboxes[index].column == 1)
+                        c1++;
+                    if (clickedboxes[index].column == 2)
+                        c2++;
+                    if (clickedboxes[index].column == 3)
+                        c3++;
+                    if (clickedboxes[index].column == 4)
+                        c4++;
+
+                    // --------------------------------------------------------------checkdiagonals------------------------------
+            
+                    if (clickedboxes[index].box.id == "box00" || clickedboxes[index].box.id == "box11" || clickedboxes[index].box.id == "box22" ||
+                        clickedboxes[index].box.id == "box33" || clickedboxes[index].box.id == "box44")
+                        left_D++;
+                    console.log("left diagonal count: " + left_D)
+                    if (clickedboxes[index].box.id == "box04" || clickedboxes[index].box.id == "box13" || clickedboxes[index].box.id == "box22" ||
+                        clickedboxes[index].box.id == "box31" || clickedboxes[index].box.id == "box40")
+                        right_D++;
+                    console.log("right diagonal count: " + right_D)
+
+                }
+                // -----------------------------------------checking rows for BINGO-------------------------
+                if (r0 == 5) {
+                    if (check_row0 == false) {
+                        check_row0 = true;
+                        bingoCount++;
+                        makeRowGreen(0);
+
+                    }
+                }
+                if (r1 == 5) {
+                    if (check_row1 == false) {
+                        check_row1 = true;
+                        bingoCount++;
+                        makeRowGreen(1);
+
+                    }
+                }
+                if (r2 == 5) {
+                    if (check_row2 == false) {
+                        check_row2 = true;
+                        bingoCount++;
+                        makeRowGreen(2);
+
+                    }
+                }
+                if (r3 == 5) {
+                    if (check_row3 == false) {
+                        check_row3 = true;
+                        bingoCount++;
+                        makeRowGreen(3);
+
+                    }
+                }
+                if (r4 == 5) {
+                    if (check_row4 == false) {
+                        check_row4 = true;
+                        bingoCount++;
+                        makeRowGreen(4);
+
+                    }
+                }
+                // -----------------------------------------checking coloums for BINGO-------------------------
+                if (c0 == 5) {
+                    if (check_col0 == false) {
+                        check_col0 = true;
+                        bingoCount++;
+                        makeColumnGreen(0);
+
+                    }
+                }
+                if (c1 == 5) {
+                    if (check_col1 == false) {
+                        check_col1 = true;
+                        bingoCount++;
+                        makeColumnGreen(1);
+
+                    }
+                }
+                if (c2 == 5) {
+                    if (check_col2 == false) {
+                        check_col2 = true;
+                        bingoCount++;
+                        makeColumnGreen(2);
+
+                    }
+                }
+                if (c3 == 5) {
+                    if (check_col3 == false) {
+                        check_col3 = true;
+                        bingoCount++;
+                        makeColumnGreen(3);
+
+                    }
+                }
+                if (c4 == 5) {
+                    if (check_col4 == false) {
+                        check_col4 = true;
+                        bingoCount++;
+                        makeColumnGreen(4);
+
+                    }
+                }
+
+                // -----------------------------------------checking diagonals for BINGO-------------------------
+                if (right_D == 5) {
+                    if (check_right_Diagonal == false) {
+                        check_right_Diagonal = true;
+                        bingoCount++;
+                        for (let index = 0; index < clickedboxes.length; index++) {
+
+                            if (clickedboxes[index].box.id == "box04" || clickedboxes[index].box.id == "box13" || clickedboxes[index].box.id == "box22" ||
+                                clickedboxes[index].box.id == "box31" || clickedboxes[index].box.id == "box40") {
+                                clickedboxes[index].box.style.backgroundColor = "green";
+                            }
+
+                        }
+
+                    }
+                }
+                if (left_D == 5) {
+                    if (check_left_Diagonal == false) {
+                        check_left_Diagonal = true;
+                        bingoCount++;
+                        for (let index = 0; index < clickedboxes.length; index++) {
+
+                            if (clickedboxes[index].box.id == "box00" || clickedboxes[index].box.id == "box11" || clickedboxes[index].box.id == "box22" ||
+                                clickedboxes[index].box.id == "box33" || clickedboxes[index].box.id == "box44") {
+                                clickedboxes[index].box.style.backgroundColor = "green";
+                            }
+
+                        }
+
+                    }
+                }
+                console.log("bingo count" + bingoCount);
+                if (bingoCount == 5) 
+                {   
+                    win=true;
+                    alert("bingo")
+                }
+
+            }
+            function makeRowGreen(r) {
+
+                for (let index = 0; index < clickedboxes.length; index++) {
+
+                    if (clickedboxes[index].row == r) {
+                        clickedboxes[index].box.style.backgroundColor = "green";
+                    }
+
+                }
+            }
+
+            function makeColumnGreen(c) {
+                for (let index = 0; index < clickedboxes.length; index++) {
+
+                    if (clickedboxes[index].column == c) {
+                        clickedboxes[index].box.style.backgroundColor = "green";
+                    }
+
+                }
+            }
+
+        });
+        
+
+     
+    </script>
+    <title>Bingo!</title>
+    
+</head>
+<style>
+    body {
+        background-color: slategray;
+    }
+
+    table {
+        text-align: center;
+    }
+
+    h1 {
+        text-align: center;
+        display: inline-block;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 4rem;
+        color: crimson;
+    }
+
+    tr,
+    td {
+        text-align: center;
+        width: 80px;
+        height: 80px;
+        background-color: rgb(201, 123, 104);
+    }
+
+    .win {
+        font-size: 6rem;
+        text-align: center;
+        display: inline-block;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: crimson;
+    }
+</style>
+
+<body>
+    <div id="head">
+        <center>
+            <h1 id="bingo">Bingo</h1>
+        </center>
+    </div>
+    <div id="table">
+        <center>
+            <table id="tt01"></table>
+        </center>
+
+    </div>
+</body>
+
+</html>
