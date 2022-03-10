@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Timer</title>
+    <script>
+        $(window).on("load", function () {
+            var min;
+            var sec;
+            $("#start").click(function () {
+                min = parseInt($("#min").val());
+                console.log("min:" + min);
+                sec = parseInt($("#sec").val());
+                console.log("sec:" + sec);
+
+                // if(min==NaN || sec==NaN)
+                // {
+                //     alert("insert a number");
+                // }
+                if (min > 9) {
+                    $("#mm01").text(min)
+                }
+                else {
+                    $("#mm01").text("0" + min)
+                }
+                if (sec > 9) {
+                    $("#ss01").text(sec);
+                }
+                else {
+                    $("#ss01").text("0" + sec);
+                }
+                var id_interval = setInterval(timer, 1000);
+
+                function timer() {
+                    if (sec > 0) {
+                        sec--;
+                        if (sec > 9)
+                            $("#ss01").text(sec);
+                        else
+                            $("#ss01").text("0" + sec);
+                        
+                    }
+                    if(sec==0 && min>0)
+                    {
+                        min--;
+                        if(min>9)
+                        $("#mm01").text(min);
+                        else
+                        $("#mm01").text("0" + min);
+                        
+                        sec=sec+60;
+                        $("#ss01").text( sec);
+                        sec--;
+                    }
+                    // if(sec==00 && min==0)
+                    // {
+                            //alert("times up") ----------------alert does not work on onload-------------------                        
+                    // }
+
+                    
+                }
+                // if(sec>0){ 
+                //     sec--;
+                //     if(sec>9)
+                //     $("#ss01").text(sec);
+                //     else
+                //     $("#ss01").text("0"+sec);
+
+                // }
+                // if(sec==60){
+                //     min--;
+                //     sec--;
+                //     if(min>9)
+                //     $("#mm01").text(min);
+                //     else
+                //     $("#mm01").text("0"+min);
+                // }
+                // if(sec==0 && min>0)
+                // {
+                //     sec--;
+                //     sec=sec+60;
+                //     min--;
+                // }
+                // if(min=0)
+                // {
+                //     $("#mm01").text("00");
+                // }
+                // if(sec=0)
+                // {
+                //     $("#mm01").text("00");
+                // }
+
+
+
+
+
+
+            });
+
+        });
+    </script>
+</head>
+<style>
+    body {
+        padding-top: 150px;
+        background-color: orange;
+        color: white;
+        font-size: large;
+    }
+
+    button {
+        background-color: orange;
+        border-color: white;
+        border-width: 1px;
+        color: white;
+        height: 30px;
+        width: 60px;
+        font-size: large;
+        border-radius: 5px;
+    }
+    .t {
+        font-size: large;
+        color: white;
+
+    }
+</style>
+
+<body>
+    <div class="t" style="font-size: xx-large;">
+        <center>
+            <h1>Timer</h1>
+        </center>
+    </div>
+    <div>
+        <center>
+            <p>Minutes:
+                <input type="number" id="min" min="0" required>
+                Seconds:
+                <input type="number" id="sec" min="0" required>
+            </p>
+            <button id="start">Start</button>
+        </center>
+    </div>
+
+    <div>
+        <center>
+            <p>Minutes : Seconds</p>
+        </center>
+    </div>
+
+    <div>
+        <center style="font-size: xx-large" , padding-top: 40px>
+            <span id="mm01">00</span>
+            <span>:</span>
+            <span id="ss01">00</span>
+        </center>
+    </div>
+</body>
+
+</html>

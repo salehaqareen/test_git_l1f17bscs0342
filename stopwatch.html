@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        // function stop_watch() {
+        //     $("#ii01").show();
+        //     $("#sw01").hide();
+        //     $("#tt01").hide();
+
+            $(window).on("load", function () {
+
+                var id_interval;
+                var min = 0;
+                var hour = 0;
+                var sec = 0;
+                $("#start").click(function () {
+
+                    id_interval = setInterval(Start, 1000);
+
+                });
+                $("#reset").click(function () {
+                    // clearInterval(id_interval);
+                    min = 0;
+                    hour = 0;
+                    sec = 0;
+                    $("#ss01").text("00");
+                    $("#mm01").text("00");
+                    $("#hh01").text("00");
+
+                });
+                $("#stop").click(function () {
+                    clearInterval(id_interval);
+                    //  min = 0;
+                    //  hour = 0;
+                    //  sec = 0;
+                    //  $("#ss01").text("00");
+                    //  $("#mm01").text("00");
+                    //  $("#hh01").text("00");
+
+                });
+                function Start() {
+                    sec++;
+                    $("#ss01").text("0" + sec);
+                    if (sec > 9) {
+                        $("#ss01").text(sec);
+                    }
+                    if (sec > 60) {
+                        min++;
+                        $("#mm01").text("0" + min);
+                        sec = 0;
+                        $("#ss01").text("00");
+                    }
+                    if (min > 9) {
+                        $("#mm01").text(min)
+                    }
+                    if (min > 60) {
+                        hour++;
+                        $("#hh01").text("0" + hour);
+                        min = 0;
+                        $("#mm01").text("00");
+
+                    }
+                    if (hour > 9) {
+                        $("#hh01").text(hour);
+                    }
+
+
+
+
+                }
+
+            });
+        // }
+        // });
+    </script>
+</head>
+<style>
+    body {
+        padding-top: 150px;
+        background-color: orange;
+    }
+
+    .stopwatch {
+        font-size: large;
+        color: white;
+
+    }
+
+    #start,
+    #stop,
+    #reset,
+    #sw01,
+    #tt01 {
+        background-color: orange;
+        border-color: white;
+        border-width: 1px;
+        color: white;
+        height: 40px;
+        width: 100px;
+        font-size: large;
+        border-radius: 5px;
+    }
+</style>
+
+<body>
+    <!-- <center style="padding-top: 100px">
+        <button id=sw01 onclick=stop_watch()>Stopwatch</button>
+        <button id="tt01">Timer</button>
+    </center> -->
+
+    <div id="ii01">
+        <div class="stopwatch" style="font-size: xx-large;">
+            <center>
+                <h1>Stopwatch</h1>
+            </center>
+        </div>
+        <div class="stopwatch">
+            <center>
+                <p style="font-size:x-large">
+                    <span>Hours</span>
+                    <span>:</span>
+                    <span>Minutes</span>
+                    <span>:</span>
+                    <span>Seconds</span>
+                </p>
+            </center>
+        </div>
+
+        <div class="stopwatch">
+            <center>
+                <p ">
+                <span id=" hh01">00</span>
+                    <span>:</span>
+                    <span id="mm01">00</span>
+                    <span>:</span>
+                    <span id="ss01">00</span>
+                </p>
+            </center>
+        </div>
+
+        <div class="bb01">
+            <center>
+                <button id="start">Start</button>
+                <button id="stop">Stop</button>
+                <button id="reset">Reset</button>
+            </center>
+        </div>
+    </div>
+
+</body>
+
+</html>

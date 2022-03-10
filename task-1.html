@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        let testing = true;
+        let testing1 = true;
+        let testing2 = true;
+        let data_array = [];
+        let arr = [];
+        let my_object = {};
+        let v = 1;
+        let q = 1;
+        var score = 0;
+        let counter = 0;
+        $("#ii01").hide();
+        $(document).ready(function () {
+            $("#btn01").click(function () {
+                $(".div03").css("display", "none");
+                $(".div04").css("display", "none");
+                $(".div02").css("display", "block");
+                $("#noData").css("display", "none");
+                $("#tcq").css("display", "none");
+                $(".divv01").css("display", "block");
+                
+            });
+            $("#btn04").click(function () {
+
+                my_object = {};
+                v = 1;
+                $("#hh01").text("");
+                validateTextForm();
+                if (testing == false && testing1 == false && testing2 == false) {
+
+                    $("#xx01").text(data_array.length+1 +" Questions added");
+                    my_object.question = $("#ii01").val();
+                    my_object.ans = $("#ii05").val();
+                    my_object.marks = $("#ii07").val();
+                    console.log("after clickking save" + my_object.marks);
+
+                    console.log("Length of object" + my_object.a.length);
+                    
+                    data_array.push(my_object);
+                    alert("done");
+                    $(".div02").css("display", "none");
+                    $("#ii01").val("");
+                    $("#ii05").val("");
+                    $("#ii07").val("");
+                    arr = [];
+                }
+            });
+            $("#btnn01").click(function () {
+                console.log("hello");
+                if ($("#ii02").val() == "") {
+                    alert("Fill the answer field");
+                }
+                else {
+                    $("#hh01").append("Option :" + v + "  " + $("#ii02").val() + "<br><br>");
+                    v = v + 1;
+                    arr.push($("#ii02").val());
+                }
+                //console.log(arr.length);
+                $("#ii02").val("");
+            });
+            $("#btnn02").click(function () {
+                // my_object.a = arr;
+                // console.log(my_object.a.length);
+                // arr = [];
+
+                if ($("#ii02").val() == "") {
+                    alert("Fill the answer field");
+                }
+                else {
+
+
+                    //  $("#btnn01").css("display","none");
+                    //  $("#btnn02").css("display","none");
+                    $("#hh01").append("Option :" + v + "  " + $("#ii02").val() + "<br><br>");
+                    arr.push($("#ii02").val());
+                    v = 1;
+                    $("#ii02").val("");
+                    // $("#hh01").css("display","none");
+                    //  $("#ii02").css("display","none"); 
+                    $(".divv01").css("display", "none")
+                }
+
+
+            });
+            $("#btn03").click(function () {
+                $(".div03").css("display", "block");
+                $(".div04").css("display", "none");
+                $(".div02").css("display", "none");
+                $("#noData").css("display", "none");
+                $("#tcq").css("display", "none");
+                console.log(data_array.length);
+                $("#demo02").text("");
+
+                for (let i = 0; i < data_array.length; i++) {
+                    let o = i + 1;
+                    $("#demo02").append("Question :" + o + " " + data_array[i]["question"] + "<br>");
+                    for (let j = 0; j < data_array[i]["a"].length; j++) {
+                        let z = j + 1
+                        $("#demo02").append(z + " : " + data_array[i]["a"][j] + "<br>");
+                    }
+                    $("#demo02").append("<br>" + " Answer : " + data_array[i]["ans"] + "<br><br>")
+                }
+
+            });
+            $("#btn-tcq").click(function () {
+                console.log("tcq entered");
+                $("#qq01").text("");
+                $("#tt01").text("");
+                $("#ss01").text("");
+                counter=0;
+                score=0;
+                q=1;
+                $(".div03").css("display", "none");
+                $(".div02").css("display", "none");
+                $("#noData").css("display", "none");
+                $("#score").css("display", "none");
+                $("#noData").css("display", "none");
+                $("#tcq").css("display", "block");
+                // let counter = 0;
+                let z = 0;
+                let input_Arr = [];
+
+                if (counter < data_array.length) {
+                    
+                    for (let i = 0; i < data_array.length; i++) {
+                        var selectId = "myselect" + i;
+                        var select=$(`<select name="options" id="${selectId}"</select>`); 
+                        console.log("hello")
+                        $("#qq01").append("<br> Question:" + q + " " + data_array[counter].question + "<br>")
+                        q++;
+                        $("#qq01").append("<br>")
+                        for (let j = 0; j < data_array[counter].a.length; j++) {
+                            let z = j + 1
+                            $("#qq01").append("Option :" + z + " : " + data_array[counter]["a"][j] + "<br><br>")
+                            var op=$('<option></option>');
+                            op.attr("value",j+1);
+                            op.attr("id",j);
+                            op.text(j+1);
+                            // op.attr(multiple);
+                            select.append(op);
+                               
+                        }
+                        $("#qq01").append("Enter the correct option ")
+                        $("#qq01").append(select);
+                        $("#qq01").append("<br>");
+
+                        
+                        // var c_opt = document.createElement("input");
+                        // c_opt.setAttribute("type", "number");
+                        // c_opt.setAttribute("id", i);
+                        // $("#qq01").append("Enter the correct option ")
+                        // $("#qq01").append(c_opt);
+                        // $("#qq01").append("<br>");
+                        // $(c_opt).css("background-color", "aqua");
+                        
+
+                        counter++;
+
+
+
+                    }
+                    
+                    
+                }
+                // $("#btn-tcq").click(function()
+                //     {
+                //         document.getElementsByName(c_opt).disabled=false;
+                //         // $("#"+i).prop("disabled",false)
+                //     });
+                
+                $("#btn-done").click(function(){
+                    var totalmarks=0;
+                    console.log("done buton working")
+                    counter=0;
+                    console.log("marks"+data_array[0].marks);
+                    for (let index = 0; index < data_array.length; index++) {
+                        // let z=$("#"+index).val();
+                        var selectId = "#myselect" + index;
+                        var z=$(selectId).val();
+                        z=parseInt(z);
+                        console.log("z: "+z)
+                        // document.getElementById(index).disabled=true;
+                        if(z==data_array[counter].ans)
+                        {
+                            $("#"+index).css("background-color", "green");
+                            console.log("if entered for marks")
+                            let c=data_array[counter].marks
+                            score+=c/1.0;
+                            console.log("if entered "+score);
+                            
+                        }
+                        else if(z=="")
+                        {
+                            alert("Enter your option in question "+ counter+1);
+                            $("#"+index).css("background-color", "yellow");
+                            console.log("yellow");
+                        }
+                        else
+                        {
+                            $("#"+index).css("background-color", "red");
+                            console.log("red");
+                        }
+                        totalmarks=parseInt(totalmarks);
+                        totalmarks+=data_array[counter].marks/1.0;
+                       
+                        
+                        counter++;
+                        
+                        
+                    }
+
+                    
+                    $("#ss01").text("Marks Obtained= "+score);
+                    $("#tt01").text("Total Marks= "+ totalmarks );
+                    score=0;
+                    counter=0;
+                    
+                });
+
+            
+
+
+            });
+            // $("#btn02").click(function () {//------------------------------------start-------------------
+            //     $(".div03").css("display", "none");
+            //     $(".div02").css("display", "none");
+            //     $("#noData").css("display", "none");
+            //     $("#score").css("display", "none");
+            //     $("#noData").css("display", "none");
+            //     if (data_array.length > 0) {
+            //         $(".div04").css("display", "block");
+            //         $("#ii06").css("background-color", "aquamarine")
+            //         let counter = 0;
+
+            //         if (data_array.length == 1) {
+            //             $("#btn05").css("display", "none");
+            //         } else {
+            //             $("#btn06").css("display", "block");
+            //         }
+            //         if (counter == 0) {
+            //             $("#a01").text("");
+            //             $("#ii06").css("background-color", "aquamarine");
+            //             console.log(data_array[0]["question"]);
+            //             let v = counter + 1;
+            //             $("#q01").text("Question " + v + " : " + data_array[counter]["question"]);
+            //             for (let j = 0; j < data_array[counter]["a"].length; j++) {
+            //                 let z = j + 1
+            //                 $("#a01").append("Option :" + z + " : " + data_array[counter]["a"][j] + "<br>");
+            //             }
+            //             ///////////////////////////////////////////////
+            //             $("#btn06").click(function () {
+            //                 let m=data_array[counter].marks;
+            //                 console.log("marks"+m);
+            //                 let value1 = $("#ii06").val();
+            //                 if (counter == 0) {
+            //                     console.log(value1);
+            //                     if (value1 == "") {
+            //                         alert("Please fill the answer");
+            //                         $("#ii06").css("background-color", "red")
+            //                     } else {
+            //                         if (value1 == data_array[counter]["ans"]) {
+            //                             $("#ii06").css("background-color", "green")
+            //                             score += m/ 1.0;
+            //                             score=parseInt(score);
+            //                             //score += 5;//////---------------------------------------fix this..................
+            //                             alert("Correct");
+            //                             console.log(score);
+            //                             if (data_array.length == 1) {
+            //                                 $("#score").css("display", "block");
+            //                                 $("#score").text("Your Score is : " + score)
+            //                                 $("#btn06").css("display", "none");
+
+            //                             }
+            //                         } else {
+            //                             $("#ii06").css("background-color", "red")
+            //                             alert("Wrong answer");
+            //                             if (data_array.length == 1) {
+            //                                 $("#score").css("display", "block");
+            //                                 $("#score").text("Your Score is : " + score)
+            //                                 $("#btn06").css("display", "none");
+            //                             }
+            //                         }
+            //                     }
+            //                     counter = counter + 1;
+            //                 }
+            //             });
+            //         }
+            //         $("#btn05").click(function () {
+            //             $("#ii06").val("");
+            //             $("#ii06").css("background-color", "aquamarine");
+            //             if (counter < data_array.length) {
+            //                 if (data_array.length == counter + 1) {
+            //                     $("#btn05").css("display", "none");
+            //                 } else {
+            //                     $("#btn06").css("display", "block");
+            //                 }
+            //                 console.log("hello world");
+            //                 let v1 = counter + 1;
+            //                 $("#q01").text("Question :" + v1 + " : " + data_array[counter]["question"]);
+            //                 $("#a01").text("");
+            //                 ///////////////////////////////////////
+            //                 for (let j = 0; j < data_array[counter]["a"].length; j++) {
+            //                     let z = j + 1
+            //                     $("#a01").append("Option :" + z + " : " + data_array[counter]["a"][j] + "<br>");
+            //                 }
+
+            //                 $("#btn06").click(function () {
+            //                     if (counter > 0 && counter < data_array.length) {
+            //                         let value = $("#ii06").val();
+            //                         if (value == "") {
+            //                             alert("Please fill the answer");
+            //                         } else {
+            //                             if (value == data_array[counter]["ans"]) {
+            //                                 $("#ii06").css("background-color", "green")
+            //                                 console.log("next button mei marks line 192 "+data_array[counter].marks)
+            //                                 let m=data_array[counter].marks;
+            //                                 console.log("marks"+m);
+            //                                 score += m/ 1.0;
+            //                                 score=parseInt(score);
+            //                                 //score+=5;
+            //                                 console.log(score);
+            //                                 $("#1106").val("");
+            //                                 if (data_array.length == counter + 1) {
+            //                                     $("#score").css("display", "block");
+            //                                     $("#btn06").css("display", "none");
+            //                                     $("#score").css("display", "block");
+            //                                     $("#score").text("Your Score is : " + score)
+            //                                 }
+            //                                 counter = counter + 1;
+            //                                 alert("Correct answer");
+            //                             } else {
+            //                                 $("#ii06").css("background-color", "red")
+            //                                 $("#1106").val("");
+            //                                 if (data_array.length == counter + 1) {
+            //                                     $("#score").css("display", "block");
+            //                                     $("#btn06").css("display", "none");
+            //                                     $("#score").css("display", "block");
+            //                                     $("#score").text("Your Score is : " + score)
+            //                                 }
+            //                                 counter = counter + 1;
+            //                                 alert("Wrong answer");
+            //                             }
+            //                         }
+            //                     }
+            //                 });
+            //             }
+            //         });
+            //     } else {
+            //         $("#noData").css("display", "block");
+            //         $("#noData").text("No Questions to show");
+            //     }
+            // });
+        });
+        function validateTextForm() {
+            var question = $("#ii01").val().toLowerCase();
+            var ans = $("#ii05").val();
+            var m = $("#ii07").val();
+            m = parseInt(m);
+            console.log("marks:" + m);
+            my_object.a = $(arr);
+            console.log()
+            testing = true;
+            testing1 = false;
+
+            if (ans == "") {
+                alert("Answer field should be filled!");
+            }
+            else if (my_object.a.length == 0) {
+                alert("Please add one question");
+                testing1 = true;
+            }
+            else if (ans <= my_object.a.length) {
+                testing = false;
+            }
+            else {
+                alert("Incorrect answer selected");
+            }
+            if (question != "") {
+                testing1 = false;
+            }
+            else {
+                alert("Please fill all the boxes");
+            }
+            if (m != "");
+            {
+                testing2 = false
+                console.log("if of m check entered")
+
+            }
+            
+        }
+    </script>
+    <style>
+        .h01 {
+            font-size: xx-large;
+            color: blue;
+            text-align: center;
+        }
+
+        .div02 {
+            display: none;
+        }
+
+        .div03 {
+            display: none;
+        }
+
+        .div04 {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 class="h01">Welcome to Quiz</h2><br><br>
+    <div class="div01">
+        <button id="btn01" type="button"
+            style="height: 30px;width: 150px;text-align: center;background-color: aqua;">Add Questions</button>
+        <!-- <button id="btn02" class="btn02" type="button"
+            style="height: 30px;width: 150px;text-align: center;background-color: aqua;">Take Quiz</button> -->
+        <button id="btn-tcq" class="btn04" type="button"
+            style="height: 30px;width: 150px;text-align: center;background-color: aqua;">Take Complete Quiz</button>
+        <button id="btn03" class="btn03" type="button"
+            style="height: 30px;width: 150px;text-align: center;background-color: aqua;">Show All
+            Questions</button><br><br>
+
+    </div>
+    <div class="div02">
+        Enter Question : <input type="text" id="ii01" style="height: 50px; width: 500px;"><br><br>
+        <div class="divv01">
+            <p id="gg01"> Add Your Answers : <input type="text" id="ii02">
+                <button type="button" id="btnn01" style="margin-left: 20px;">Next</button>
+                <button type="button" id="btnn02" style="margin-left: 20px;">Done</button>
+            </p>
+        </div>
+        <br><br>
+        <p id="hh01"></p>
+        Correct Answer : <input type="number" id="ii05" style="background-color: aqua;"><br>
+        <br><br>
+        <p id="jj01"></p>
+        Marks: <input type="number" id="ii07" style="background-color:aqua;"> <br><br><br>
+        <button id="btn04" type="button"
+            style="size: 10px;font-weight: bold;color: white;background-color: blue;height: 30px;width: 90px;border-radius: 50px;margin-left: 200px;">Save</button><br><br>
+        <p id=xx01></p>
+            <p id="demo01" style="color: red;"></p>
+    </div>
+    <div class="div03">
+        <h2>Quiz Test</h2><br>
+        <p id="demo02"></p>
+    </div>
+    <!-- <div class="div04">
+        <p id="q01"></p>
+        <p id="a01"></p>
+        Choose you Answer : <input type="number" id="ii06" style="background-color: aquamarine;"><br><br>
+        <p>You answer should be only A,B,C!</p><br><br><br>
+        <button id="btn05" type="button">Next</button><br><br>
+        <button id="btn06" type="button">Done</button>
+    </div> -->
+    <div id="tcq" style="display: none;">
+        <p id="qq01"></p>
+        <p id="ss01">score= </p> 
+        <p id="tt01">Total Marks= </p> 
+        <input type="button" value="Done" id="btn-done">
+    </div>
+    <br><br>
+    <p id="noData" style="font-size: large;font-weight: bold;margin-left: 100px; display: none;"></p>
+    <p id="score" style="font-size: large;font-weight: bold;margin-left: 100px; display: none;"></p>
+</body>
+
+</html>

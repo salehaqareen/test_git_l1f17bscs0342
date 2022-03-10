@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- save button khatam
+save values in obj when add question is .click()
+opts save in array when next opt. click()           DONEE
+
+
+    global counter=0 ++ in the end after next button
+    couarr[counter]-elements print
+    create a next button .click if(validation of c-opt)
+    c-opt==input in the text feild 
+    .click()->next->score++
+    alert wrong right
+    make if in the start if(arr.length>counter)
+
+ -->
+
+    <title>Create quiz</title>
+    <script>
+        let score = 0;
+        let counter = 0;
+        let index=0
+        question = {};
+        arr = [];
+        let new_array = [];
+       
+        $(document).ready(function () {
+            $("#b-add").click(function () {
+                $("#div-1").show()
+                $("#div-2").hide()
+            });
+            $("#b-show").click(function () {
+                $("#div-2").show()
+                $("#div-1").hide()
+            });
+        });
+        function showoptions() {
+            let x = document.getElementById("opt").value;
+            if (x == "" || x == " ") {
+                alert("insert option")
+            }
+            else {
+                new_array.push(x);
+                console.log(new_array.length)
+                // document.getElementById("opt").value = "";
+                // $("#show-opt").append("<li>" + x + "</li>");
+            }
+
+        }
+        // function storec_opt() {
+        //     question.c_opt = document.getElementById("c-opt").value;
+        //     console.log("c-opt: "+question.c_opt);  
+        // }
+        function addnewquestion() {
+            question.ques = document.getElementById("q").value; //----------------question stored in the element of the obj------------
+            console.log(question.ques);
+            question.c_opt = document.getElementById("c-opt").value;//--------------correct option stored in the e------------------
+            question.opts = $(new_array);
+            arr.push(question);
+            console.log(arr);
+            console.log("array index 1"+arr[1]);
+            document.getElementById("q").value = "";
+            document.getElementById("opt").value = "";
+            document.getElementById("c-opt").value = "";
+            question = {};
+            new_array = [];
+
+        }
+        function showquiz() {
+            
+            // for (let i = 0; i < arr.length; i++) {
+            //     $("#2").append(arr[i].ques + "<br>");
+            //     for (let j = 0; j < arr[i].opts.length; j++) {
+            //         $("#2").append(arr[i].opts[j] + "<br>");
+            //     }
+            // }
+            //-------------------------------------------------------------------------------does not work--------------------------------
+            // $("#2").append(arr[counter].ques + "<br>");       
+            // for (let j = 0; j < arr[counter].opts.length; j++) {
+            //     $("#2").append(arr[counter].opts[j] + "<br>");
+            // }
+            // counter++;
+                  
+            
+            //------------------prints the question--------------------------
+                   $("#2").append("Question: "+arr[index].ques+"<br>");
+               //------------------prints the options----------------------
+                for (let i = 0; i < arr[index].opts.length; i++) {
+                    $("#2").append("<li>"+arr[index].opts[i]+"</li>");
+ 
+                }  
+            if (index<arr.length){
+             
+              
+                
+                $("#next-q").click(function(){
+                    
+                     //-----------------checks the input ans increments the scores
+                     $("#2").append("Question: "+arr[index].ques+"<br>");
+                    //------------------prints the options----------------------
+                for (let i = 0; i < arr[index].opts.length; i++) {
+                    $("#2").append("<li>"+arr[index].opts[i]+"</li>");
+ 
+                } 
+                    let x1=arr[index]["c_opt"];
+                    let in_put = document.getElementById("c_ans").value.toString();
+                    console.log(x1)
+                    console.log(in_put)
+                    if(x1==in_put)
+                    {   
+                        alert("Correct answer");
+                            score+=1;
+                            console.log("score="+score);
+                            document.getElementById("s").innerHTML=score;
+                            //$("s").append(score);
+                            index++;
+                            document.getElementById('2').innerHTML=""
+                    //         $("#2").append("Question: "+arr[index].ques+"<br>");
+                    //     for (let i = 0; i < arr[index].opts.length; i++) {
+                    // $("#2").append("<li>"+arr[index].opts[i]+"</li>");
+                        // }
+                            
+                    }
+                    else if(in_put==" " || in_put=="")
+                    {
+                        alert("insert an answer");
+                        document.getElementById('2').innerHTML=""
+                    //     $("#2").append("Question: "+arr[index].ques+"<br>");
+                    //     for (let i = 0; i < arr[index].opts.length; i++) {
+                    // $("#2").append("<li>"+arr[index].opts[i]+"</li>");
+                    // }
+                }
+
+                    else{
+                    alert("Wrong answer");
+                    document.getElementById('2').innerHTML=""
+                    // $("#2").append("Question: "+arr[index].ques+"<br>");
+                    // for (let i = 0; i < arr[index].opts.length; i++) {
+                    // $("#2").append("<li>"+arr[index].opts[i]+"</li>");
+                    // }
+                }
+                $("#2").append("Question: "+arr[index].ques+"<br>");
+                     for (let i = 0; i < arr[index].opts.length; i++) {
+                     $("#2").append("<li>"+arr[index].opts[i]+"</li>");
+                     }
+                });
+                
+                
+                
+
+            }
+            
+            
+        }
+
+
+
+    </script>
+</head>
+
+<body>
+
+    <div id="aq">
+        <h1 style="color: seagreen">Quiz Creator</h1>
+        <div class="add-btn">
+            <button id="b-add" style="height: 50px; width: 200px" ()>Add Question</button>
+            <!-- </div> -->
+            <!-- <div class="show-btn"> -->
+            <button id="b-show" style="height: 50px; width: 200px" onclick=showquiz()>Show Quiz</button>
+        </div>
+        <div id="div-1" style="display: none;">
+            <div style="display: block">
+                <!-- add question input text and button -->
+                <br />
+                <label for="q" style="color: seagreen">Question</label>
+                <input type="text" name="Question" id="q" style="height: 50px; width: 500px" required />
+                <!-- <button id="b-saveques" type="submit" onclick="showquestion()"> save</button> -->
+            </div>
+
+            <div style="display: block">
+                <!-- OPTIONS -->
+                <br /><br /><label for="opt" style="color: seagreen">Options: </label>
+                <input type="text" name="options" id="opt" required />
+                <button id="b-next" onclick=showoptions()>Next option</button>
+                <!-- <button id="b-done" onclick=disable_next()>Done</button><br /> -->
+                <!-- <p id="show-opt"></p> -->
+            </div>
+
+            <div style="display: block">
+                <!-- add correct option and save -->
+                <br /><label for="c-opt" style="color: seagreen">Correct option</label>
+                <input type="text" name="correct-option" id="c-opt" />
+                <!-- <button id="b-save" onclick=storec_opt()>Save</button> -->
+                <button type="button" id="add_btn" onclick="addnewquestion()"> Add Question</button>
+
+            </div>
+            <div>
+                <p id="show-ques"></p>
+                <ol id="show-opt"></ol>
+            </div>
+        </div>
+
+        <div id="div-2" , style="display: none">
+            <p id="1"></p>
+            <p id="2"></p>
+            <!-- this div is for showing the stored question -->
+            <br><label for="c_ans">Enter the correct option</label>
+
+            <input type="text" name="answer" id="c_ans">
+                <br><button id="next-q" onclick="">Next</button>
+                <p id="s">score=</p>
+        </div>
+    </div>
+</body>
+
+</html>
